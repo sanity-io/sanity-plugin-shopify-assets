@@ -1,0 +1,89 @@
+{
+  "name": "sanity-plugin-shopify-assets",
+  "version": "1.0.0",
+  "description": "Choose assets from your Shopify store in your Sanity Studio",
+  "keywords": [
+    "sanity",
+    "sanity-plugin",
+    "images",
+    "shopify",
+    "assets",
+    "source"
+  ],
+  "homepage": "https://github.com/sanity-io/sanity-plugin-shopify-assets#readme",
+  "bugs": {
+    "url": "https://github.com/sanity-io/sanity-plugin-shopify-assets/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sanity-io/sanity-plugin-shopify-assets.git"
+  },
+  "license": "MIT",
+  "author": "Sanity.io <hello@sanity.io>",
+  "exports": {
+    ".": {
+      "types": "./lib/src/index.d.ts",
+      "source": "./src/index.ts",
+      "import": "./lib/index.esm.js",
+      "require": "./lib/index.js",
+      "default": "./lib/index.esm.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./lib/index.js",
+  "module": "./lib/index.esm.js",
+  "source": "./src/index.ts",
+  "types": "./lib/src/index.d.ts",
+  "files": [
+    "src",
+    "lib",
+    "v2-incompatible.js",
+    "sanity.json"
+  ],
+  "scripts": {
+    "prebuild": "npm run clean && plugin-kit verify-package --silent && pkg-utils",
+    "build": "pkg-utils build",
+    "clean": "rimraf lib",
+    "link-watch": "plugin-kit link-watch",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build",
+    "watch": "pkg-utils watch"
+  },
+  "dependencies": {
+    "@sanity/incompatible-plugin": "^1.0.4",
+    "pretty-bytes": "^6.0.0",
+    "pretty-ms": "^8.0.0",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-photo-album": "^2.0.0",
+    "video.js": "^7.20.3"
+  },
+  "devDependencies": {
+    "@sanity/pkg-utils": "^1.20.3",
+    "@sanity/plugin-kit": "^2.2.0",
+    "@types/styled-components": "^5.1.26",
+    "@types/video.js": "^7.3.50",
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-sanity": "^6.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.1",
+    "prettier-plugin-packagejson": "^2.3.0",
+    "react": "^18",
+    "rimraf": "^3.0.2",
+    "sanity": "^3.0.0",
+    "styled-components": "^5.3.6",
+    "typescript": "^4.9.4"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "sanity": "^3.0.0",
+    "styled-components": "^5.2"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
