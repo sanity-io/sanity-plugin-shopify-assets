@@ -1,5 +1,5 @@
 import {BehaviorSubject, Observable, concat, defer} from 'rxjs'
-import {debounceTime, distinctUntilChanged, switchMap, withLatestFrom} from 'rxjs/operators'
+import {debounceTime, distinctUntilChanged, map, switchMap, withLatestFrom} from 'rxjs/operators'
 
 import axios from 'axios'
 
@@ -13,18 +13,17 @@ const fetchSearch = (
   cursor: string,
   perPage: number
 ): Observable<any> =>
-  defer(
-    () =>
-      axios.get(
-        `https://${projectId}.api.sanity.io/v1/shopify/assets/production?shop=${shop}&query=${encodeURIComponent(
-          query
-        )}${cursor && `&cursor=${cursor}`}&limit=${perPage}`,
-        {
-          withCredentials: true,
-          method: 'GET',
-        }
-      ) as any
-  )
+  defer(() =>
+    axios.get(
+      `https://${projectId}.api.sanity.io/v1/shopify/assets/production?shop=${shop}&query=${encodeURIComponent(
+        query
+      )}${cursor && `&cursor=${cursor}`}&limit=${perPage}`,
+      {
+        withCredentials: true,
+        method: 'GET',
+      }
+    )
+  ).pipe(map((result) => result.data))
 
 const fetchList = (
   projectId: string,
@@ -32,18 +31,17 @@ const fetchList = (
   cursor: string,
   perPage: number
 ): Observable<any> =>
-  defer(
-    () =>
-      axios.get(
-        `https://${projectId}.api.sanity.io/v1/shopify/assets/production?shop=${shop}${
-          cursor && `&cursor=${cursor}`
-        }&limit=${perPage}`,
-        {
-          withCredentials: true,
-          method: 'GET',
-        }
-      ) as any
-  )
+  defer(() =>
+    axios.get(
+      `https://${projectId}.api.sanity.io/v1/shopify/assets/production?shop=${shop}${
+        cursor && `&cursor=${cursor}`
+      }&limit=${perPage}`,
+      {
+        withCredentials: true,
+        method: 'GET',
+      }
+    )
+  ).pipe(map((result) => result.data))
 
 export const search = (
   projectId: string,

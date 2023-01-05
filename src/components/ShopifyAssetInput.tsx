@@ -1,10 +1,11 @@
-import React from 'react'
-import {WarningOutlineIcon} from '@sanity/icons'
-import {Box, Button, Card, Flex, Grid, Stack, Text} from '@sanity/ui'
-import {useCallback, useState} from 'react'
+import {Box, Button, Card, Flex, Grid, Inline, Stack, Text} from '@sanity/ui'
+import {ErrorOutlineIcon, WarningOutlineIcon} from '@sanity/icons'
 import {ObjectInputProps, PatchEvent, unset} from 'sanity'
-import {ShopifyAsset} from '../types'
+import {useCallback, useState} from 'react'
+
+import {Asset} from '../types'
 import AssetPreview from './AssetPreview'
+import React from 'react'
 import ShopifyAssetPicker from './ShopifyAssetPicker'
 import ShopifyIcon from './ShopifyIcon'
 
@@ -29,20 +30,17 @@ export default function ShopifyAssetInput(props: ObjectInputProps) {
 
   if (!shopifyDomain) {
     return (
-      <Card padding={4} radius={2} shadow={1} tone="caution">
-        <Flex>
-          <Box marginRight={3}>
-            <Text muted size={1}>
-              <WarningOutlineIcon />
-            </Text>
-          </Box>
-
-          <Box flex={1}>
+      <Card overflow="hidden" padding={4} radius={2} shadow={1} tone="critical">
+        <Flex align="center" gap={3}>
+          <Text size={2}>
+            <ErrorOutlineIcon />
+          </Text>
+          <Inline space={2}>
             <Text size={1}>
               You need to configure your *.myshopify.com domain in the plugin / field options to
               enable Shopify Assets.
             </Text>
-          </Box>
+          </Inline>
         </Flex>
       </Card>
     )
@@ -59,7 +57,7 @@ export default function ShopifyAssetInput(props: ObjectInputProps) {
         />
       )}
       <Stack>
-        <AssetPreview value={value as ShopifyAsset} />
+        <AssetPreview value={value as Asset} />
 
         <Grid gap={1} style={{gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))'}}>
           <Button

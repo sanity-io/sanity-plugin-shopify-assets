@@ -47,8 +47,6 @@ export interface PageInfo {
 }
 
 export interface ShopifyAPIResponse {
-  data: {
-    pageInfo: PageInfo
-    assets: ShopifyFile[]
-  }
+  pageInfo: PageInfo
+  assets: ShopifyFile[]
 }

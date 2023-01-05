@@ -26,20 +26,29 @@ Add it as a plugin in sanity.config.ts (or .js):
  })
 ```
 
-## Example Shopify API result
+Simply update the `shopifyDomain` to your store URL. You'll need to install the [Sanity Connect](https://www.sanity.io/docs/sanity-connect-for-shopify) app on your store to handle authorisation.
+
+It's also possible to define the Shopify domain on the field level, which allows you to retrieve assets from different stores.
+
+## Example of resulting object
 
 ```json
 {
-    coming soon
-}
-
-```
-
-## Example resulting asset document
-
-```json
-{
-    coming soon
+  "id": "gid://shopify/MediaImage/21154034647345",
+  "url": "https://cdn.shopify.com/s/files/1/0555/4906/7569/files/Green_1.jpg?v=1665668073",
+  "type": "image",
+  "meta": {
+    "fileSize": 362812,
+    "alt": "",
+    "width": 3169,
+    "height": 3169
+  },
+  "preview": {
+    "url": "https://cdn.shopify.com/s/files/1/0555/4906/7569/files/Green_1.jpg?v=1665668073",
+    "width": 3169,
+    "height": 3169
+  },
+  "filename": "Green_1.jpg"
 }
 ```
 

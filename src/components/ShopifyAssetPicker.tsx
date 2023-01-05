@@ -1,10 +1,11 @@
 import {Asset, PageInfo, ShopifyAPIResponse, ShopifyFile} from '../types'
 import {BehaviorSubject, Subscription} from 'rxjs'
-import {Card, Dialog, Flex, Spinner, Stack, Text, TextInput} from '@sanity/ui'
+import {Card, Dialog, Flex, Inline, Spinner, Stack, Text, TextInput} from '@sanity/ui'
 import {PatchEvent, set, useProjectId} from 'sanity'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import DialogHeader from './DialogHeader'
+import {ErrorOutlineIcon} from '@sanity/icons'
 import File from './File'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import PhotoAlbum from 'react-photo-album'
@@ -48,9 +49,16 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
       RESULTS_PER_PAGE
     ).subscribe({
       next: (results: ShopifyAPIResponse) => {
-        setSearchResults((prevResults) => [...prevResults, ...results.data.assets])
-        setPageInfo(results.data.pageInfo)
+        setSearchResults((prevResults) => [...prevResults, ...results.assets])
+        setPageInfo(results.pageInfo)
         setIsLoading(false)
+      },
+      error: (err) => {
+        setError(
+          `${
+            err.response.data.message || err.message || 'An error occurred'
+          } - check plugin configuration`
+        )
       },
     })
 
@@ -115,70 +123,80 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
       width={4}
     >
       <Stack space={3} padding={4}>
-        <Card>
-          <Search space={3}>
-            <Text size={1} weight="semibold">
-              Search Shopify for assets
-            </Text>
-            <TextInput
-              label="Search Images"
-              placeholder="filename.jpg"
-              value={query}
-              onChange={handleSearchTermChanged}
-            />
-          </Search>
-        </Card>
-        {error && (
-          <Text size={1} muted>
-            {error}
-          </Text>
-        )}
-        {!isLoading && searchResults.length === 0 && (
-          <Text size={1} muted>
-            No results found
-          </Text>
-        )}
-        <InfiniteScroll
-          dataLength={searchResults.length} // This is important field to render the next data
-          next={handleScollerLoadMore}
-          hasMore={pageInfo ? pageInfo?.hasNextPage : true}
-          scrollThreshold={0.99}
-          height="60vh"
-          loader={
-            <Flex align="center" justify="center" padding={3}>
-              <Spinner muted />
-            </Flex>
-          }
-          endMessage={
-            <Flex align="center" justify="center" padding={3}>
-              <Text size={1} muted>
-                No more results
+        {error ? (
+          <Card overflow="hidden" padding={4} radius={2} shadow={1} tone="critical">
+            <Flex align="center" gap={3}>
+              <Text size={2}>
+                <ErrorOutlineIcon />
               </Text>
+              <Inline space={2}>
+                <Text size={1}>{error}</Text>
+              </Inline>
             </Flex>
-          }
-        >
-          {searchResults && (
-            <PhotoAlbum
-              layout="rows"
-              spacing={PHOTO_SPACING}
-              padding={PHOTO_PADDING}
-              targetRowHeight={handleWidth}
-              photos={searchResults.map((file: ShopifyFile) => ({
-                src:
-                  file.url ||
-                  'https://cdn.shopify.com/s/files/1/0555/4906/7569/files/preview_images/document-7f23220eb4be7eeaa6e225738b97d943f22e74367cd2d7544fc3b37fb36acd71_0d65c290-de39-4adc-9f23-4aa7354dd56d.png?v=1671123685',
-                width: file?.preview?.width || 2048,
-                height: file?.preview?.height || 2048,
-                key: file.id,
-                data: file,
-              }))}
-              renderPhoto={renderFile}
-              componentsProps={{
-                containerProps: {style: {marginBottom: `${PHOTO_SPACING}px`}},
-              }}
-            />
-          )}
-        </InfiniteScroll>
+          </Card>
+        ) : (
+          <>
+            <Card>
+              <Search space={3}>
+                <Text size={1} weight="semibold">
+                  Search Shopify for assets
+                </Text>
+                <TextInput
+                  label="Search Images"
+                  placeholder="filename.jpg"
+                  value={query}
+                  onChange={handleSearchTermChanged}
+                />
+              </Search>
+            </Card>
+            {!isLoading && searchResults.length === 0 && (
+              <Text size={1} muted>
+                No results found
+              </Text>
+            )}
+            <InfiniteScroll
+              dataLength={searchResults.length} // This is important field to render the next data
+              next={handleScollerLoadMore}
+              hasMore={pageInfo ? pageInfo?.hasNextPage : true}
+              scrollThreshold={0.99}
+              height="60vh"
+              loader={
+                <Flex align="center" justify="center" padding={3}>
+                  <Spinner muted />
+                </Flex>
+              }
+              endMessage={
+                <Flex align="center" justify="center" padding={3}>
+                  <Text size={1} muted>
+                    No more results
+                  </Text>
+                </Flex>
+              }
+            >
+              {searchResults && (
+                <PhotoAlbum
+                  layout="rows"
+                  spacing={PHOTO_SPACING}
+                  padding={PHOTO_PADDING}
+                  targetRowHeight={handleWidth}
+                  photos={searchResults.map((file: ShopifyFile) => ({
+                    src:
+                      file.url ||
+                      'https://cdn.shopify.com/s/files/1/0555/4906/7569/files/preview_images/document-7f23220eb4be7eeaa6e225738b97d943f22e74367cd2d7544fc3b37fb36acd71_0d65c290-de39-4adc-9f23-4aa7354dd56d.png?v=1671123685',
+                    width: file?.preview?.width || 2048,
+                    height: file?.preview?.height || 2048,
+                    key: file.id,
+                    data: file,
+                  }))}
+                  renderPhoto={renderFile}
+                  componentsProps={{
+                    containerProps: {style: {marginBottom: `${PHOTO_SPACING}px`}},
+                  }}
+                />
+              )}
+            </InfiniteScroll>
+          </>
+        )}
       </Stack>
     </Dialog>
   )
