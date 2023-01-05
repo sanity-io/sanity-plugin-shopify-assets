@@ -1,11 +1,15 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {Dialog, Stack, Text} from '@sanity/ui'
-import PhotoAlbum from 'react-photo-album'
-import {PatchEvent, set} from 'sanity'
-import {ShopifyAsset} from '../types'
-import {exampleFiles} from '../utils/shopify'
+import {Asset, PageInfo, ShopifyAPIResponse, ShopifyFile} from '../types'
+import {BehaviorSubject, Subscription} from 'rxjs'
+import {Card, Dialog, Flex, Spinner, Stack, Text, TextInput} from '@sanity/ui'
+import {PatchEvent, set, useProjectId} from 'sanity'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+
 import DialogHeader from './DialogHeader'
 import File from './File'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import PhotoAlbum from 'react-photo-album'
+import {Search} from './ShopifyAssetInput.styled'
+import {search} from '../datastores/shopify'
 
 const RESULTS_PER_PAGE = 42
 const PHOTO_SPACING = 2
@@ -20,24 +24,61 @@ interface AssetPickerProps {
 
 export default function ShopifyAssetPicker(props: AssetPickerProps) {
   const {isOpen, onClose, shopifyDomain, onChange} = props
+  const projectId = useProjectId()
+
   const [error, setError] = useState('')
-  // const [query, setQuery] = useState('')
-  const [files, setFiles] = useState(exampleFiles.data.files.edges)
-  // const [pageInfo, setPageInfo] = useState({})
+  const [query, setQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [pageInfo, setPageInfo] = useState<PageInfo>()
   const [isLoading, setIsLoading] = useState(true)
 
+  const searchSubject$ = useMemo(() => new BehaviorSubject(''), [])
+  const cursorSubject$ = useMemo(() => new BehaviorSubject(''), [])
+
   useEffect(() => {
-    if (!shopifyDomain) setError('Please configure your Shopify in the plugin config')
+    if (!shopifyDomain) setError('Please configure your Shopify domain in the plugin config')
   }, [shopifyDomain])
 
-  const handleWidth = useCallback((width: number) => {
-    if (width < 300) return 150
-    else if (width < 600) return 200
-    return 300
-  }, [])
+  useEffect(() => {
+    const searchSubscription: Subscription = search(
+      projectId,
+      shopifyDomain,
+      searchSubject$,
+      cursorSubject$,
+      RESULTS_PER_PAGE
+    ).subscribe({
+      next: (results: ShopifyAPIResponse) => {
+        setSearchResults((prevResults) => [...prevResults, ...results.data.assets])
+        setPageInfo(results.data.pageInfo)
+        setIsLoading(false)
+      },
+    })
+
+    return () => searchSubscription.unsubscribe()
+  }, [searchSubject$, cursorSubject$, shopifyDomain, projectId])
+
+  const handleSearchTermChanged = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newQuery = event.currentTarget.value
+      setQuery(newQuery)
+      setSearchResults([])
+      setPageInfo(undefined)
+      setIsLoading(true)
+
+      cursorSubject$.next('')
+      searchSubject$.next(newQuery)
+    },
+    [cursorSubject$, searchSubject$]
+  )
+
+  const handleScollerLoadMore = useCallback(() => {
+    setIsLoading(true)
+    if (pageInfo) cursorSubject$.next(pageInfo.cursor)
+    searchSubject$.next(query)
+  }, [cursorSubject$, pageInfo, searchSubject$, query])
 
   const handleSelect = useCallback(
-    (file: ShopifyAsset) => {
+    (file: Asset) => {
       onChange(PatchEvent.from([set(file)]))
       onClose()
     },
@@ -59,13 +100,11 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
     [handleSelect]
   )
 
-  // const handleSearchTermChanged = useCallback(
-  //   (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     const newQuery = event.currentTarget.value
-  //     setQuery(newQuery)
-  //   },
-  //   [setQuery]
-  // )
+  const handleWidth = useCallback((width: number) => {
+    if (width < 300) return 150
+    else if (width < 600) return 200
+    return 300
+  }, [])
 
   return (
     <Dialog
@@ -76,7 +115,7 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
       width={4}
     >
       <Stack space={3} padding={4}>
-        {/* <Card>
+        <Card>
           <Search space={3}>
             <Text size={1} weight="semibold">
               Search Shopify for assets
@@ -88,42 +127,21 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
               onChange={handleSearchTermChanged}
             />
           </Search>
-        </Card> */}
+        </Card>
         {error && (
           <Text size={1} muted>
             {error}
           </Text>
         )}
-        {!isLoading && files.length === 0 && (
+        {!isLoading && searchResults.length === 0 && (
           <Text size={1} muted>
             No results found
           </Text>
         )}
-        {files && (
-          <PhotoAlbum
-            key={`shopify-assets`}
-            layout="rows"
-            spacing={PHOTO_SPACING}
-            padding={PHOTO_PADDING}
-            targetRowHeight={handleWidth}
-            photos={files.map((file) => ({
-              src: file.node.preview.image.url,
-              width: file.node.preview.image.width,
-              height: file.node.preview.image.height,
-              key: file.node.id,
-              data: file.node,
-            }))}
-            renderPhoto={renderFile}
-            componentsProps={{
-              containerProps: {style: {marginBottom: `${PHOTO_SPACING}px`}},
-            }}
-          />
-        )}
-        {/* <InfiniteScroll
-          dataLength={this.getPhotos().length} // This is important field to render the next data
-          next={this.handleScollerLoadMore}
-          // scrollableTarget="unsplash-scroller"
-          hasMore
+        <InfiniteScroll
+          dataLength={searchResults.length} // This is important field to render the next data
+          next={handleScollerLoadMore}
+          hasMore={pageInfo ? pageInfo?.hasNextPage : true}
           scrollThreshold={0.99}
           height="60vh"
           loader={
@@ -132,38 +150,35 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
             </Flex>
           }
           endMessage={
-            <Text size={1} muted>
-              No more results
-            </Text>
+            <Flex align="center" justify="center" padding={3}>
+              <Text size={1} muted>
+                No more results
+              </Text>
+            </Flex>
           }
         >
-          {searchResults
-            .filter((photos) => photos.length > 0)
-            .map((photos: UnsplashPhoto[], index) => (
-              <PhotoAlbum
-                key={`gallery-${query || 'popular'}-${index}`}
-                layout="rows"
-                spacing={PHOTO_SPACING}
-                padding={PHOTO_PADDING}
-                targetRowHeight={(width) => {
-                  if (width < 300) return 150
-                  else if (width < 600) return 200
-                  return 300
-                }}
-                photos={photos.map((photo: UnsplashPhoto) => ({
-                  src: photo.urls.small,
-                  width: photo.width,
-                  height: photo.height,
-                  key: photo.id,
-                  data: photo,
-                }))}
-                renderPhoto={this.renderImage}
-                componentsProps={{
-                  containerProps: {style: {marginBottom: `${PHOTO_SPACING}px`}},
-                }}
-              />
-            ))}
-        </InfiniteScroll> */}
+          {searchResults && (
+            <PhotoAlbum
+              layout="rows"
+              spacing={PHOTO_SPACING}
+              padding={PHOTO_PADDING}
+              targetRowHeight={handleWidth}
+              photos={searchResults.map((file: ShopifyFile) => ({
+                src:
+                  file.url ||
+                  'https://cdn.shopify.com/s/files/1/0555/4906/7569/files/preview_images/document-7f23220eb4be7eeaa6e225738b97d943f22e74367cd2d7544fc3b37fb36acd71_0d65c290-de39-4adc-9f23-4aa7354dd56d.png?v=1671123685',
+                width: file?.preview?.width || 2048,
+                height: file?.preview?.height || 2048,
+                key: file.id,
+                data: file,
+              }))}
+              renderPhoto={renderFile}
+              componentsProps={{
+                containerProps: {style: {marginBottom: `${PHOTO_SPACING}px`}},
+              }}
+            />
+          )}
+        </InfiniteScroll>
       </Stack>
     </Dialog>
   )

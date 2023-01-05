@@ -13,66 +13,42 @@ export interface ObjectSchemaWithOptions extends ObjectSchemaType {
   }
 }
 
-type PossibleFileTypeNames = 'GenericFile' | 'MediaImage' | 'Video'
+type PossibleFileTypes = 'file' | 'image' | 'video'
 
-interface ShopifyImage {
-  altText?: string
-  height?: number
-  id?: string
+export interface AssetPreviewImage {
+  height: number
   url: string
-  width?: number
+  width: number
 }
 
-export interface ShopifyAsset {
+export interface AssetMeta {
   alt?: string
-  bytes?: number
-  createdAt: Date
   duration?: number
-  filename?: string
+  fileSize?: number
   height?: number
-  preview?: ShopifyImage
-  shopifyId: string
-  type: PossibleFileTypeNames
-  url?: string
   width?: number
 }
-
-/* Below we define the types for the Shopify API */
 
 export interface ShopifyFile {
-  alt?: string
-  createdAt: Date
-  duration?: number
+  meta: AssetMeta
+  preview: AssetPreviewImage
   id: string
-  image?: ShopifyImage
-  originalFileSize?: number
-  originalSource?: {
-    fileSize?: number
-    height?: number
-    url?: string
-    width?: number
-  }
-  preview: {
-    image?: ShopifyImage
-  }
-  typename: PossibleFileTypeNames
-  url?: string
+  type: PossibleFileTypes
+  url: string
 }
 
-export interface FileEdge {
-  cursor: string
-  node: ShopifyFile
+export interface Asset extends ShopifyFile {
+  filename?: string
 }
 
 export interface PageInfo {
-  endCursor?: string
   hasNextPage: boolean
-  hasPreviousPage: boolean
-  startCursor?: string
+  cursor: string
 }
 
-export interface FileConnection {
-  edges: Array<FileEdge>
-  nodes: Array<ShopifyFile>
-  pageInfo: PageInfo
+export interface ShopifyAPIResponse {
+  data: {
+    pageInfo: PageInfo
+    assets: ShopifyFile[]
+  }
 }

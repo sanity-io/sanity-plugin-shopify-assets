@@ -51,10 +51,12 @@
   },
   "dependencies": {
     "@sanity/incompatible-plugin": "^1.0.4",
+    "axios": "^1.2.2",
     "pretty-bytes": "^6.0.0",
     "pretty-ms": "^8.0.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-photo-album": "^2.0.0",
+    "rxjs": "^7.8.0",
     "video.js": "^7.20.3"
   },
   "devDependencies": {

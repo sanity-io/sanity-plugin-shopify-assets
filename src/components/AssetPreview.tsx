@@ -1,11 +1,12 @@
+import {Box, Flex, Text, Theme, useTheme} from '@sanity/ui'
+import {DurationLine, InfoLine} from './File.styled'
+
+import {Asset} from '../types'
 import React from 'react'
 import VideoPlayer from './VideoPlayer'
-import {Box, Flex, Text, Theme, useTheme} from '@sanity/ui'
-import {ShopifyAsset} from '../types'
-import styled from 'styled-components'
-import {DurationLine, InfoLine} from './File.styled'
 import prettyBytes from 'pretty-bytes'
 import prettyMilliseconds from 'pretty-ms'
+import styled from 'styled-components'
 
 type SanityTheme = Theme['sanity']
 
@@ -14,7 +15,7 @@ interface Style {
 }
 
 type ComponentProps = {
-  value: ShopifyAsset
+  value: Asset
 }
 
 export const StyledBox = styled(Box)`
@@ -26,16 +27,19 @@ export const StyledBox = styled(Box)`
   position: relative;
 `
 
-const RenderAsset = ({value, url}: {value: ShopifyAsset; url: string}) => {
+const RenderAsset = ({value, url}: {value: Asset; url: string}) => {
   switch (value.type) {
-    case 'Video':
+    case 'video':
       return <VideoPlayer src={url} kind="player" />
     default:
       return (
         <Flex justify="center">
           <img
             alt="preview"
-            src={value?.preview?.url}
+            src={
+              value?.preview?.url ||
+              'https://cdn.shopify.com/s/files/1/0555/4906/7569/files/preview_images/document-7f23220eb4be7eeaa6e225738b97d943f22e74367cd2d7544fc3b37fb36acd71_0d65c290-de39-4adc-9f23-4aa7354dd56d.png?v=1671123685'
+            }
             style={{
               maxWidth: '100%',
               height: 'auto',
@@ -56,14 +60,15 @@ const AssetPreview = ({value}: ComponentProps) => {
     return null
   }
 
-  const {bytes, duration, filename} = value
+  const {filename, meta} = value
+  const {fileSize, duration} = meta
 
   return (
     <StyledBox studioTheme={theme} marginBottom={2}>
       <RenderAsset value={value} url={url} />
       <InfoLine padding={2} radius={2} margin={2}>
         <Text size={1} title={`Select ${filename}`}>
-          {filename} {bytes && `(${prettyBytes(bytes)})`}
+          {filename} {fileSize && `(${prettyBytes(fileSize)})`}
         </Text>
       </InfoLine>
       {duration && (
