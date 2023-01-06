@@ -1,7 +1,7 @@
-import {Asset, PageInfo, ShopifyAPIResponse, ShopifyFile} from '../types'
+import {Asset, PageInfo, ShopifyAPIResponse, ShopifyFile, shopifyAssetSchemaName} from '../types'
 import {BehaviorSubject, Subscription} from 'rxjs'
 import {Card, Dialog, Flex, Inline, Spinner, Stack, Text, TextInput} from '@sanity/ui'
-import {PatchEvent, set, useProjectId} from 'sanity'
+import {PatchEvent, set, useProjectId, ObjectInputProps} from 'sanity'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import DialogHeader from './DialogHeader'
@@ -16,15 +16,14 @@ const RESULTS_PER_PAGE = 42
 const PHOTO_SPACING = 2
 const PHOTO_PADDING = 1
 
-interface AssetPickerProps {
+export interface AssetPickerProps extends ObjectInputProps<Asset> {
+  shopifyDomain: string
   isOpen: boolean
   onClose: () => void
-  shopifyDomain: string
-  onChange: (event: PatchEvent) => void
 }
 
 export default function ShopifyAssetPicker(props: AssetPickerProps) {
-  const {isOpen, onClose, shopifyDomain, onChange} = props
+  const {isOpen, onClose, shopifyDomain, onChange, schemaType, value} = props
   const projectId = useProjectId()
 
   const [error, setError] = useState('')
@@ -87,10 +86,12 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
 
   const handleSelect = useCallback(
     (file: Asset) => {
+      file._key = value?._key
+      file._type = schemaType.name
       onChange(PatchEvent.from([set(file)]))
       onClose()
     },
-    [onChange, onClose]
+    [onChange, onClose, schemaType.name, value?._key]
   )
 
   const renderFile = useCallback(

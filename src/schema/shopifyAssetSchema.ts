@@ -1,7 +1,7 @@
 /* eslint-disable */
 import ShopifyAssetInput from '../components/ShopifyAssetInput'
-// import AssetDiff from '../components/AssetDiff'
-// import AssetPreview from '../components/AssetPreview'
+import AssetDiff from '../components/AssetDiff'
+import AssetPreview from '../components/AssetPreview'
 import {defineField, defineType} from 'sanity'
 
 interface ObjectConfig {
@@ -27,27 +27,37 @@ export const shopifyAssetSchema = (config: ObjectConfig) => {
     fields: [
       defineField({
         type: 'string',
-        name: 'alt',
-      }),
-      defineField({
-        type: 'number',
-        name: 'bytes',
-      }),
-      defineField({
-        type: 'datetime',
-        name: 'createdAt',
-      }),
-      defineField({
-        type: 'number',
-        name: 'duration',
-      }),
-      defineField({
-        type: 'string',
         name: 'filename',
       }),
       defineField({
-        type: 'number',
-        name: 'height',
+        type: 'string',
+        name: 'id',
+      }),
+      defineField({
+        type: 'object',
+        name: 'meta',
+        fields: [
+          defineField({
+            type: 'string',
+            name: 'alt',
+          }),
+          defineField({
+            type: 'number',
+            name: 'duration',
+          }),
+          defineField({
+            type: 'number',
+            name: 'fileSize',
+          }),
+          defineField({
+            type: 'number',
+            name: 'height',
+          }),
+          defineField({
+            type: 'number',
+            name: 'width',
+          }),
+        ],
       }),
       defineField({
         type: 'object',
@@ -69,36 +79,38 @@ export const shopifyAssetSchema = (config: ObjectConfig) => {
       }),
       defineField({
         type: 'string',
-        name: 'shopifyId',
-      }),
-      defineField({
-        type: 'string',
         name: 'type',
-        // "MediaImage", "GenericFile", "Video"
       }),
       defineField({
         type: 'url',
         name: 'url',
       }),
-      defineField({
-        type: 'number',
-        name: 'width',
-      }),
     ],
-    components: {
-      input: ShopifyAssetInput,
-      // diff: AssetDiff,
-      // preview: AssetPreview,
-    },
+    ...({
+      components: {
+        input: ShopifyAssetInput,
+        diff: AssetDiff,
+        preview: AssetPreview,
+      },
+    } as {}),
     preview: {
       select: {
+        meta: 'meta',
+        preview: 'preview',
         url: 'url',
+        filename: 'filename',
         type: 'type',
       },
-      prepare({url, type}) {
+      prepare({url, meta, preview, filename, type}) {
         return {
-          title: url,
-          type,
+          title: filename,
+          subtitle: type,
+          value: {
+            url,
+            meta,
+            preview,
+            filename,
+          },
         }
       },
     },

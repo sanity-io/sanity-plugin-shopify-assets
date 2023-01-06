@@ -50,10 +50,11 @@ export default function ShopifyAssetInput(props: ObjectInputProps) {
     <>
       {dialogOpen && (
         <ShopifyAssetPicker
+          {...props}
+          shopifyDomain={shopifyDomain}
           isOpen={dialogOpen}
           onClose={onClose}
-          onChange={onChange}
-          shopifyDomain={shopifyDomain}
+          value={value as Asset}
         />
       )}
       <Stack>

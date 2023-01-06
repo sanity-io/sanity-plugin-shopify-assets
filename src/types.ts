@@ -38,6 +38,8 @@ export interface ShopifyFile {
 }
 
 export interface Asset extends ShopifyFile {
+  _type: string
+  _key?: string
   filename?: string
 }
 
