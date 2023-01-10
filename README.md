@@ -2,6 +2,8 @@
 
 > This is a **Sanity Studio v3** plugin.
 
+Select assets from your Shopify store in the context of your Sanity Studio. This plugin allows you to serve assets from the Shopify CDN in your frontends.
+
 ## Installation
 
 ```
@@ -28,7 +30,34 @@ Add it as a plugin in sanity.config.ts (or .js):
 
 Simply update the `shopifyDomain` to your store URL. You'll need to install the [Sanity Connect](https://www.sanity.io/docs/sanity-connect-for-shopify) app on your store to handle authorisation.
 
-It's also possible to define the Shopify domain on the field level, which allows you to retrieve assets from different stores.
+Then you can enable the asset selector on a field:
+
+```
+import {defineType, defineField} from 'sanity'
+
+export const myDocumentSchema = defineType({
+  type: "document",
+  name: "article",
+  fields: [
+    defineField({
+      type: "shopify.asset",
+      name: "shopifyAsset",
+    }),
+  ]
+})
+```
+
+It's also possible to define the Shopify domain on the field level, which allows you to retrieve assets from different stores. Each store must be connected to your Sanity project via the Sanity Connect app. In order to do this, simply declare the `shopifyDomain` on the field:
+
+```
+defineField({
+  type: "shopify.asset",
+  name: "shopifyAsset",
+  options: {
+    shopifyDomain: '*.myshopify.com'
+  }
+}),
+```
 
 ## Example of resulting object
 

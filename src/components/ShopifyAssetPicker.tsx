@@ -181,9 +181,7 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
                   padding={PHOTO_PADDING}
                   targetRowHeight={handleWidth}
                   photos={searchResults.map((file: ShopifyFile) => ({
-                    src:
-                      file.url ||
-                      'https://cdn.shopify.com/s/files/1/0555/4906/7569/files/preview_images/document-7f23220eb4be7eeaa6e225738b97d943f22e74367cd2d7544fc3b37fb36acd71_0d65c290-de39-4adc-9f23-4aa7354dd56d.png?v=1671123685',
+                    src: file?.preview?.url,
                     width: file?.preview?.width || 2048,
                     height: file?.preview?.height || 2048,
                     key: file.id,

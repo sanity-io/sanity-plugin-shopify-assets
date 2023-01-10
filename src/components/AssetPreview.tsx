@@ -37,10 +37,7 @@ const RenderAsset = ({value, url}: {value: Asset; url: string}) => {
         <Flex justify="center">
           <img
             alt="preview"
-            src={
-              value?.preview?.url ||
-              'https://cdn.shopify.com/s/files/1/0555/4906/7569/files/preview_images/document-7f23220eb4be7eeaa6e225738b97d943f22e74367cd2d7544fc3b37fb36acd71_0d65c290-de39-4adc-9f23-4aa7354dd56d.png?v=1671123685'
-            }
+            src={value?.preview?.url}
             style={{
               maxWidth: '100%',
               height: 'auto',
