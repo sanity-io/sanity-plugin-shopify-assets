@@ -1,4 +1,4 @@
-# sanity-plugin-asset-source-shopify
+# sanity-plugin-shopify-assets
 
 > This is a **Sanity Studio v3** plugin.
 
@@ -65,12 +65,13 @@ defineField({
 {
   "id": "gid://shopify/MediaImage/21154034647345",
   "url": "https://cdn.shopify.com/s/files/1/0555/4906/7569/files/Green_1.jpg?v=1665668073",
-  "type": "image",
+  "type": "image", // image, video, or file
   "meta": {
     "fileSize": 362812,
     "alt": "",
     "width": 3169,
-    "height": 3169
+    "height": 3169,
+    "duration": 60 // video only
   },
   "preview": {
     "url": "https://cdn.shopify.com/s/files/1/0555/4906/7569/files/Green_1.jpg?v=1665668073",
