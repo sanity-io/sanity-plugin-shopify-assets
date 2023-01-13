@@ -61,7 +61,7 @@ defineField({
 
 ## Example of resulting object
 
-```json
+```jsonc
 {
   "id": "gid://shopify/MediaImage/21154034647345",
   "url": "https://cdn.shopify.com/s/files/1/0555/4906/7569/files/Green_1.jpg?v=1665668073",
