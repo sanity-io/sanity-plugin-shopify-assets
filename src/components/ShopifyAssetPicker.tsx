@@ -1,4 +1,4 @@
-import {Asset, PageInfo, ShopifyAPIResponse, ShopifyFile, shopifyAssetSchemaName} from '../types'
+import {Asset, PageInfo, ShopifyAPIResponse, ShopifyFile} from '../types'
 import {BehaviorSubject, Subscription} from 'rxjs'
 import {Card, Dialog, Flex, Inline, Spinner, Stack, Text, TextInput} from '@sanity/ui'
 import {PatchEvent, set, useProjectId, ObjectInputProps} from 'sanity'

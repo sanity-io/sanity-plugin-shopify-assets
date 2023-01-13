@@ -7,7 +7,6 @@ import VideoPlayer from './VideoPlayer'
 import prettyBytes from 'pretty-bytes'
 import prettyMilliseconds from 'pretty-ms'
 import styled from 'styled-components'
-import {PreviewProps} from 'sanity'
 
 type SanityTheme = Theme['sanity']
 
@@ -15,7 +14,7 @@ interface Style {
   studioTheme: SanityTheme
 }
 
-interface ComponentProps extends PreviewProps {
+interface ComponentProps {
   value: Asset
 }
 

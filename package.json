@@ -42,13 +42,13 @@
   ],
   "scripts": {
     "prebuild": "npm run clean && plugin-kit verify-package --silent && pkg-utils",
-    "build": "pkg-utils build",
+    "build": "run-s clean && plugin-kit verify-package --silent && pkg-utils build --strict && pkg-utils --strict",
     "clean": "rimraf lib",
     "link-watch": "plugin-kit link-watch",
     "lint": "eslint .",
-    "prepublishOnly": "npm run build",
-    "watch": "pkg-utils watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepublishOnly": "run-s build",
+    "watch": "pkg-utils watch --strict"
   },
   "dependencies": {
     "@sanity/incompatible-plugin": "^1.0.4",
@@ -64,7 +64,7 @@
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "@sanity/pkg-utils": "^1.20.3",
-    "@sanity/plugin-kit": "^2.2.0",
+    "@sanity/plugin-kit": "^3.1.2",
     "@sanity/semantic-release-preset": "^3.0.2",
     "@types/styled-components": "^5.1.26",
     "@types/video.js": "^7.3.50",
@@ -77,7 +77,9 @@
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
+    "install": "^0.13.0",
     "lint-staged": "^13.1.0",
+    "npm": "^9.3.0",
     "prettier": "^2.8.1",
     "prettier-plugin-packagejson": "^2.3.0",
     "react": "^18",
