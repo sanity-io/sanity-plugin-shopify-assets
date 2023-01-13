@@ -19,8 +19,8 @@ interface ComponentProps {
 }
 
 export const StyledBox = styled(Box)`
-  background-color: ${({studioTheme}: Style) => studioTheme.color.card.enabled.bg2};
-  border: ${({studioTheme}: Style) => `1px solid ${studioTheme.color.card.enabled.border}`};
+  background-color: ${({studioTheme}: Style) => studioTheme?.color?.card?.enabled?.bg2};
+  border: ${({studioTheme}: Style) => `1px solid ${studioTheme?.color?.card?.enabled?.border}`};
   display: flex;
   justify-content: center;
   margin-bottom: ${({studioTheme}: Style) => studioTheme.space[4]};
@@ -63,13 +63,13 @@ const AssetPreview = ({value}: ComponentProps) => {
   return (
     <StyledBox studioTheme={theme} marginBottom={2}>
       <RenderAsset value={value} url={url} />
-      <InfoLine padding={2} radius={2} margin={2}>
+      <InfoLine padding={2} radius={2} margin={2} studioTheme={theme}>
         <Text size={1} title={`Select ${filename}`}>
           {filename} {fileSize && `(${prettyBytes(fileSize)})`}
         </Text>
       </InfoLine>
       {duration && (
-        <DurationLine padding={2} radius={2} margin={2}>
+        <DurationLine padding={2} radius={2} margin={2} studioTheme={theme}>
           <Text size={1} title={`Video duration: ${filename}`}>
             {prettyMilliseconds(duration, {colonNotation: true, secondsDecimalDigits: 0})}
           </Text>

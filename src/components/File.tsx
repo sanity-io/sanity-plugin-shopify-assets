@@ -39,13 +39,13 @@ export default function File(props: Props) {
       }}
       onClick={handleClick}
     >
-      <InfoLine padding={2} radius={2} margin={2}>
+      <InfoLine padding={2} radius={2} margin={2} studioTheme={theme}>
         <Text size={1} title={`Select ${filename}`}>
           {filename} {meta.fileSize && `(${prettyBytes(meta.fileSize)})`}
         </Text>
       </InfoLine>
       {meta.duration && (
-        <DurationLine padding={2} radius={2} margin={2}>
+        <DurationLine padding={2} radius={2} margin={2} studioTheme={theme}>
           <Text size={1} title={`Video duration: ${filename}`}>
             {prettyMilliseconds(meta.duration, {colonNotation: true, secondsDecimalDigits: 0})}
           </Text>

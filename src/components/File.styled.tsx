@@ -32,9 +32,9 @@ export const Root = styled.div`
 `
 
 export const InfoLine = styled(Card)`
-  ${({theme}) => `
-    --infoline-fg: ${theme.sanity.color.card.enabled.fg};
-    --infoline-bg: ${theme.sanity.color.card.enabled.bg};
+  ${({studioTheme}: Style) => `
+    --infoline-fg: ${studioTheme.color.card.enabled.fg};
+    --infoline-bg: ${studioTheme.color.card.enabled.bg};
   `};
   user-drag: none;
   position: absolute;
@@ -50,9 +50,9 @@ export const InfoLine = styled(Card)`
 `
 
 export const DurationLine = styled(Card)`
-  ${({theme}) => `
-    --durationline-fg: ${theme.sanity.color.card.enabled.bg};
-    --durationline-bg: ${theme.sanity.color.card.enabled.fg};
+  ${({studioTheme}: Style) => `
+    --durationline-fg: ${studioTheme.color.card.enabled.bg};
+    --durationline-bg: ${studioTheme.color.card.enabled.fg};
   `};
   user-drag: none;
   position: absolute;
