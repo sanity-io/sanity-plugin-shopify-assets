@@ -28,7 +28,7 @@ Add it as a plugin in sanity.config.ts (or .js):
  })
 ```
 
-Simply update the `shopifyDomain` to your store URL. You'll need to install the [Sanity Connect](https://www.sanity.io/docs/sanity-connect-for-shopify) app on your store to handle authorisation.
+Simply update the `shopifyDomain` to your store URL. You'll need to install the [Sanity Connect](https://www.sanity.io/docs/sanity-connect-for-shopify) app on your store to handle authorisation. You'll need to ensure the Liquid sync option is enabled within the Sanity Connect app.
 
 Then you can enable the asset selector on a field:
 
