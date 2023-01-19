@@ -1,7 +1,7 @@
 import {Asset, PageInfo, ShopifyAPIResponse, ShopifyFile} from '../types'
 import {BehaviorSubject, Subscription} from 'rxjs'
 import {Card, Dialog, Flex, Inline, Spinner, Stack, Text, TextInput} from '@sanity/ui'
-import {PatchEvent, set, useProjectId, ObjectInputProps} from 'sanity'
+import {PatchEvent, set, useProjectId, ObjectInputProps, useDataset} from 'sanity'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
 import DialogHeader from './DialogHeader'
@@ -25,6 +25,7 @@ export interface AssetPickerProps extends ObjectInputProps<Asset> {
 export default function ShopifyAssetPicker(props: AssetPickerProps) {
   const {isOpen, onClose, shopifyDomain, onChange, schemaType, value} = props
   const projectId = useProjectId()
+  const dataset = useDataset()
 
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
@@ -40,13 +41,14 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
   }, [shopifyDomain])
 
   useEffect(() => {
-    const searchSubscription: Subscription = search(
+    const searchSubscription: Subscription = search({
       projectId,
-      shopifyDomain,
-      searchSubject$,
-      cursorSubject$,
-      RESULTS_PER_PAGE
-    ).subscribe({
+      dataset,
+      shop: shopifyDomain,
+      query: searchSubject$,
+      cursor: cursorSubject$,
+      resultsPerPage: RESULTS_PER_PAGE,
+    }).subscribe({
       next: (results: ShopifyAPIResponse) => {
         setSearchResults((prevResults) => [...prevResults, ...results.assets])
         setPageInfo(results.pageInfo)
@@ -62,7 +64,7 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
     })
 
     return () => searchSubscription.unsubscribe()
-  }, [searchSubject$, cursorSubject$, shopifyDomain, projectId])
+  }, [searchSubject$, cursorSubject$, shopifyDomain, projectId, dataset])
 
   const handleSearchTermChanged = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

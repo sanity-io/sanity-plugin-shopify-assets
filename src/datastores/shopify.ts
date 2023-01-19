@@ -6,50 +6,58 @@ import axios from 'axios'
 type SearchSubject = BehaviorSubject<string>
 type CursorSubject = BehaviorSubject<any>
 
-const fetchSearch = (
-  projectId: string,
-  shop: string,
-  query: string,
-  cursor: string,
-  perPage: number
-): Observable<any> =>
-  defer(() =>
-    axios.get(
-      `https://${projectId}.api.sanity.io/v1/shopify/assets/production?shop=${shop}&query=${encodeURIComponent(
-        query
-      )}${cursor && `&cursor=${cursor}`}&limit=${perPage}`,
-      {
-        withCredentials: true,
-        method: 'GET',
-      }
-    )
-  ).pipe(map((result) => result.data))
-
-const fetchList = (
-  projectId: string,
-  shop: string,
-  cursor: string,
-  perPage: number
-): Observable<any> =>
-  defer(() =>
-    axios.get(
-      `https://${projectId}.api.sanity.io/v1/shopify/assets/production?shop=${shop}${
-        cursor && `&cursor=${cursor}`
-      }&limit=${perPage}`,
-      {
-        withCredentials: true,
-        method: 'GET',
-      }
-    )
-  ).pipe(map((result) => result.data))
-
-export const search = (
-  projectId: string,
-  shop: string,
-  query: SearchSubject,
-  cursor: CursorSubject,
+interface fetchProps {
+  projectId: string
+  dataset: string
+  shop: string
+  query: SearchSubject
+  cursor: CursorSubject
   resultsPerPage: number
-): Observable<any> => {
+}
+
+interface searchProps extends Omit<fetchProps, 'query' | 'cursor'> {
+  query: string
+  cursor: string
+}
+interface listProps extends Omit<fetchProps, 'query' | 'cursor'> {
+  cursor: string
+}
+
+const fetchSearch = (props: searchProps): Observable<any> => {
+  const {projectId, dataset, shop, query, cursor, resultsPerPage} = props
+
+  return defer(() => {
+    return axios.get(
+      `https://${projectId}.api.sanity.io/v1/shopify/assets/${dataset}?shop=${shop}&query=${encodeURIComponent(
+        query
+      )}${cursor && `&cursor=${cursor}`}&limit=${resultsPerPage}`,
+      {
+        withCredentials: true,
+        method: 'GET',
+      }
+    )
+  }).pipe(map((result) => result.data))
+}
+
+const fetchList = (props: listProps): Observable<any> => {
+  const {projectId, dataset, shop, cursor, resultsPerPage} = props
+
+  return defer(() =>
+    axios.get(
+      `https://${projectId}.api.sanity.io/v1/shopify/assets/${dataset}?shop=${shop}${
+        cursor && `&cursor=${cursor}`
+      }&limit=${resultsPerPage}`,
+      {
+        withCredentials: true,
+        method: 'GET',
+      }
+    )
+  ).pipe(map((result) => result.data))
+}
+
+export const search = (props: fetchProps): Observable<any> => {
+  const {projectId, dataset, shop, query, cursor, resultsPerPage} = props
+
   return concat(
     query.pipe(
       withLatestFrom(cursor),
@@ -57,9 +65,11 @@ export const search = (
       distinctUntilChanged(),
       switchMap(([q, c]) => {
         if (q) {
-          return fetchSearch(projectId, shop, q, c, resultsPerPage).pipe(distinctUntilChanged())
+          return fetchSearch({projectId, dataset, shop, query: q, cursor: c, resultsPerPage}).pipe(
+            distinctUntilChanged()
+          )
         }
-        return fetchList(projectId, shop, c, resultsPerPage)
+        return fetchList({projectId, dataset, shop, cursor: c, resultsPerPage})
       })
     )
   )
