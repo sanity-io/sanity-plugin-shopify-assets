@@ -5,6 +5,12 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.0.1...v1.0.2) (2023-02-08)
+
+### Bug Fixes
+
+- **chore:** fix api endpoint ([d38a393](https://github.com/sanity-io/sanity-plugin-shopify-assets/commit/d38a39320d7e78b1ff2e90d4fea75aa1b617f7bb))
+
 ## [1.0.1](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.0.0...v1.0.1) (2023-01-19)
 
 ### Bug Fixes

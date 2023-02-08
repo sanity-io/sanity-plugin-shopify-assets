@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-shopify-assets",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Choose assets from your Shopify store in your Sanity Studio",
   "keywords": [
     "sanity",
