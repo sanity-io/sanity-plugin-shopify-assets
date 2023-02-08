@@ -28,7 +28,7 @@ const fetchSearch = (props: searchProps): Observable<any> => {
 
   return defer(() => {
     return axios.get(
-      `https://${projectId}.api.sanity.work/v1/shopify/assets/${dataset}?shop=${shop}&query=${encodeURIComponent(
+      `https://${projectId}.api.sanity.io/v1/shopify/assets/${dataset}?shop=${shop}&query=${encodeURIComponent(
         query
       )}${cursor && `&cursor=${cursor}`}&limit=${resultsPerPage}`,
       {
@@ -44,7 +44,7 @@ const fetchList = (props: listProps): Observable<any> => {
 
   return defer(() =>
     axios.get(
-      `https://${projectId}.api.sanity.work/v1/shopify/assets/${dataset}?shop=${shop}${
+      `https://${projectId}.api.sanity.io/v1/shopify/assets/${dataset}?shop=${shop}${
         cursor && `&cursor=${cursor}`
       }&limit=${resultsPerPage}`,
       {
