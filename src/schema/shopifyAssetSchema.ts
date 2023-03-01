@@ -28,62 +28,32 @@ export const shopifyAssetSchema = (config: ObjectConfig) => {
       defineField({
         type: 'string',
         name: 'filename',
+        title: 'Filename',
       }),
       defineField({
         type: 'string',
         name: 'id',
+        title: 'ID',
       }),
       defineField({
-        type: 'object',
+        type: 'shopify.assetMetadata',
         name: 'meta',
-        fields: [
-          defineField({
-            type: 'string',
-            name: 'alt',
-          }),
-          defineField({
-            type: 'number',
-            name: 'duration',
-          }),
-          defineField({
-            type: 'number',
-            name: 'fileSize',
-          }),
-          defineField({
-            type: 'number',
-            name: 'height',
-          }),
-          defineField({
-            type: 'number',
-            name: 'width',
-          }),
-        ],
+        title: 'Metadata',
       }),
       defineField({
-        type: 'object',
+        type: 'shopify.assetPreview',
         name: 'preview',
-        fields: [
-          defineField({
-            type: 'number',
-            name: 'height',
-          }),
-          defineField({
-            type: 'number',
-            name: 'width',
-          }),
-          defineField({
-            type: 'url',
-            name: 'url',
-          }),
-        ],
+        title: 'Preview',
       }),
       defineField({
         type: 'string',
         name: 'type',
+        title: 'Type',
       }),
       defineField({
         type: 'url',
         name: 'url',
+        title: 'URL',
       }),
     ],
     ...({

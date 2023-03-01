@@ -1,6 +1,8 @@
+import {definePlugin, type ObjectDefinition} from 'sanity'
 import {shopifyAssetSchema} from './schema/shopifyAssetSchema'
-import {definePlugin, ObjectDefinition} from 'sanity'
-import {PluginConfig} from './types'
+import {shopifyAssetPreviewSchema} from './schema/shopifyAssetPreviewSchema'
+import {shopifyAssetMetadataSchema} from './schema/shopifyAssetMetadataSchema'
+import type {PluginConfig} from './types'
 
 export * from './types'
 
@@ -25,7 +27,7 @@ export const shopifyAssets = definePlugin<PluginConfig>((config) => {
   return {
     name: 'shopify-asset-schema',
     schema: {
-      types: [shopifyAssetSchema(config)],
+      types: [shopifyAssetPreviewSchema, shopifyAssetMetadataSchema, shopifyAssetSchema(config)],
     },
   }
 })
