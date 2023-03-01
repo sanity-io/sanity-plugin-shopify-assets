@@ -1,16 +1,16 @@
-import {Asset, PageInfo, ShopifyAPIResponse, ShopifyFile} from '../types'
 import {BehaviorSubject, Subscription} from 'rxjs'
+import {ErrorOutlineIcon} from '@sanity/icons'
 import {Card, Dialog, Flex, Inline, Spinner, Stack, Text, TextInput} from '@sanity/ui'
 import {PatchEvent, set, useProjectId, ObjectInputProps, useDataset} from 'sanity'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
-
-import DialogHeader from './DialogHeader'
-import {ErrorOutlineIcon} from '@sanity/icons'
-import File from './File'
-import InfiniteScroll from 'react-infinite-scroll-component'
 import PhotoAlbum from 'react-photo-album'
-import {Search} from './ShopifyAssetInput.styled'
+import InfiniteScroll from 'react-infinite-scroll-component'
+
 import {search} from '../datastores/shopify'
+import type {Asset, PageInfo, ShopifyAPIResponse, ShopifyFile} from '../types'
+import DialogHeader from './DialogHeader'
+import File from './File'
+import {Search} from './ShopifyAssetInput.styled'
 
 const RESULTS_PER_PAGE = 42
 const PHOTO_SPACING = 2

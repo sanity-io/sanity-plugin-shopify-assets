@@ -1,7 +1,8 @@
 import React from 'react'
 import {DiffFromTo} from 'sanity'
-import {Asset} from '../types'
 import {Flex, Text, Stack} from '@sanity/ui'
+
+import type {Asset} from '../types'
 
 type Props = {
   value: Asset | undefined

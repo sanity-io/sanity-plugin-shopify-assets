@@ -1,12 +1,12 @@
-import {Box, Flex, Text, Theme, useTheme} from '@sanity/ui'
-import {DurationLine, InfoLine} from './File.styled'
-
-import {Asset} from '../types'
 import React from 'react'
-import VideoPlayer from './VideoPlayer'
 import prettyBytes from 'pretty-bytes'
 import prettyMilliseconds from 'pretty-ms'
 import styled from 'styled-components'
+import {Box, Flex, Text, Theme, useTheme} from '@sanity/ui'
+
+import {Asset} from '../types'
+import {DurationLine, InfoLine} from './File.styled'
+import VideoPlayer from './VideoPlayer'
 
 type SanityTheme = Theme['sanity']
 
