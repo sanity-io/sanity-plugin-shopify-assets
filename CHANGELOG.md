@@ -5,6 +5,12 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.0](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.0.2...v1.1.0) (2023-03-02)
+
+### Features
+
+- strict schema support ([6ebc010](https://github.com/sanity-io/sanity-plugin-shopify-assets/commit/6ebc010f1eea557dc6a8af56ff04d1f2914c2a12))
+
 ## [1.0.2](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.0.1...v1.0.2) (2023-02-08)
 
 ### Bug Fixes
