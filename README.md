@@ -14,45 +14,45 @@ npm install sanity-plugin-shopify-assets
 
 Add it as a plugin in sanity.config.ts (or .js):
 
-```
- import {defineConfig} from 'sanity'
- import {shopifyAssets} from 'sanity-plugin-shopify-assets'
+```ts
+import {defineConfig} from 'sanity'
+import {shopifyAssets} from 'sanity-plugin-shopify-assets'
 
- export const defineConfig({
-     //...
-     plugins: [
-         shopifyAssets({
-            shopifyDomain: '*.myshopify.com'
-         })
-     ]
- })
+export const defineConfig({
+    //...
+    plugins: [
+        shopifyAssets({
+          shopifyDomain: '*.myshopify.com'
+        })
+    ]
+})
 ```
 
 Simply update the `shopifyDomain` to your store URL. You'll need to install the [Sanity Connect](https://www.sanity.io/docs/sanity-connect-for-shopify) app on your store to handle authorisation. You'll need to ensure the Liquid sync option is enabled within the Sanity Connect app.
 
 Then you can enable the asset selector on a field:
 
-```
+```ts
 import {defineType, defineField} from 'sanity'
 
 export const myDocumentSchema = defineType({
-  type: "document",
-  name: "article",
+  type: 'document',
+  name: 'article',
   fields: [
     defineField({
-      type: "shopify.asset",
-      name: "shopifyAsset",
+      type: 'shopify.asset',
+      name: 'shopifyAsset',
     }),
-  ]
+  ],
 })
 ```
 
 It's also possible to define the Shopify domain on the field level, which allows you to retrieve assets from different stores. Each store must be connected to your Sanity project via the Sanity Connect app. In order to do this, simply declare the `shopifyDomain` on the field:
 
-```
+```ts
 defineField({
-  type: "shopify.asset",
-  name: "shopifyAsset",
+  type: 'shopify.asset',
+  name: 'shopifyAsset',
   options: {
     shopifyDomain: '*.myshopify.com'
   }
