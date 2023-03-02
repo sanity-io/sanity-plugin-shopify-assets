@@ -1,11 +1,11 @@
+import React from 'react'
+import {ErrorOutlineIcon} from '@sanity/icons'
 import {Button, Card, Flex, Grid, Inline, Stack, Text} from '@sanity/ui'
 import {ObjectInputProps, PatchEvent, unset} from 'sanity'
 import {useCallback, useState} from 'react'
 
 import {Asset} from '../types'
 import AssetPreview from './AssetPreview'
-import {ErrorOutlineIcon} from '@sanity/icons'
-import React from 'react'
 import ShopifyAssetPicker from './ShopifyAssetPicker'
 import ShopifyIcon from './ShopifyIcon'
 

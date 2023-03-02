@@ -1,4 +1,4 @@
-import {ObjectSchemaType} from 'sanity'
+import type {ObjectSchemaType} from 'sanity'
 
 export interface PluginConfig {
   /**

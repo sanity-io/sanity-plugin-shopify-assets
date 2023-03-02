@@ -1,11 +1,11 @@
-import {Asset, ShopifyFile} from '../types'
-import {DurationLine, InfoLine, Root} from './File.styled'
 import React, {useCallback, useRef} from 'react'
 import {Text, useTheme} from '@sanity/ui'
-
-import {extractName} from '../utils/helpers'
 import prettyBytes from 'pretty-bytes'
 import prettyMilliseconds from 'pretty-ms'
+
+import {extractName} from '../utils/helpers'
+import {Asset, ShopifyFile} from '../types'
+import {DurationLine, InfoLine, Root} from './File.styled'
 
 type Props = {
   data: ShopifyFile

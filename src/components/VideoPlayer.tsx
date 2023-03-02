@@ -1,5 +1,5 @@
-import React, {CSSProperties, useCallback, useEffect, MouseEvent} from 'react'
-import videojs, {VideoJsPlayer} from 'video.js'
+import React, {type CSSProperties, type MouseEvent, useCallback, useEffect} from 'react'
+import videojs, {type VideoJsPlayer} from 'video.js'
 
 type PlayerKind = 'player' | 'diff'
 
