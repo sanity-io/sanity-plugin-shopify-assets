@@ -1,5 +1,5 @@
 import React, {useCallback, useRef} from 'react'
-import {Text, useTheme} from '@sanity/ui'
+import {Text} from '@sanity/ui'
 import prettyBytes from 'pretty-bytes'
 import prettyMilliseconds from 'pretty-ms'
 
@@ -25,11 +25,9 @@ export default function File(props: Props) {
     onClick({...data, filename})
   }, [onClick, data, filename])
 
-  const theme = useTheme().sanity
   return (
     <Root
       ref={rootElm}
-      studioTheme={theme}
       title={`${filename}`}
       tabIndex={0}
       style={{
@@ -39,13 +37,13 @@ export default function File(props: Props) {
       }}
       onClick={handleClick}
     >
-      <InfoLine padding={2} radius={2} margin={2} studioTheme={theme}>
+      <InfoLine padding={2} radius={2} margin={2}>
         <Text size={1} title={`Select ${filename}`}>
           {filename} {meta.fileSize && `(${prettyBytes(meta.fileSize)})`}
         </Text>
       </InfoLine>
       {meta.duration && (
-        <DurationLine padding={2} radius={2} margin={2} studioTheme={theme}>
+        <DurationLine padding={2} radius={2} margin={2}>
           <Text size={1} title={`Video duration: ${filename}`}>
             {prettyMilliseconds(meta.duration, {colonNotation: true, secondsDecimalDigits: 0})}
           </Text>

@@ -1,5 +1,5 @@
 import {Stack} from '@sanity/ui'
-import styled from 'styled-components'
+import {styled} from 'styled-components'
 
 export const Search = styled(Stack)`
   position: sticky;
