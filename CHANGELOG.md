@@ -5,6 +5,12 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.0](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.1.0...v1.2.0) (2025-03-07)
+
+### Features
+
+- add react 19 to peer deps ([10070d3](https://github.com/sanity-io/sanity-plugin-shopify-assets/commit/10070d3052264cd26e2ee8c0ab84e43a30fe62a6))
+
 ## [1.1.0](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.0.2...v1.1.0) (2023-03-02)
 
 ### Features
