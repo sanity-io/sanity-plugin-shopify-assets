@@ -5,6 +5,12 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.2.0...v1.2.1) (2025-07-10)
+
+### Bug Fixes
+
+- **deps:** allow studio v4 in peer dep ranges update-browserslist-db and typescript to latest ([#16](https://github.com/sanity-io/sanity-plugin-shopify-assets/issues/16)) ([5c3483f](https://github.com/sanity-io/sanity-plugin-shopify-assets/commit/5c3483f57625ca9c7c3eada1dd326ee8ead338df))
+
 ## [1.2.0](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.1.0...v1.2.0) (2025-03-07)
 
 ### Features
