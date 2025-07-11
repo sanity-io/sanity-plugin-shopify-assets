@@ -1,7 +1,5 @@
 # sanity-plugin-shopify-assets
 
-> This is a **Sanity Studio v3** plugin.
-
 Select assets from your Shopify store in the context of your Sanity Studio. This plugin allows you to serve assets from the Shopify CDN in your frontends.
 
 ## Installation
