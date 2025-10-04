@@ -1,7 +1,7 @@
 import {BehaviorSubject, Subscription} from 'rxjs'
 import {ErrorOutlineIcon} from '@sanity/icons'
 import {Card, Dialog, Flex, Inline, Spinner, Stack, Text, TextInput} from '@sanity/ui'
-import {PatchEvent, set, useProjectId, ObjectInputProps, useDataset} from 'sanity'
+import {PatchEvent, set, useProjectId, ObjectInputProps, useDataset, useClient} from 'sanity'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import PhotoAlbum from 'react-photo-album'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -26,6 +26,8 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
   const {isOpen, onClose, shopifyDomain, onChange, schemaType, value} = props
   const projectId = useProjectId()
   const dataset = useDataset()
+  const client = useClient({apiVersion: '2021-06-07'})
+  const token = client.config().token
 
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
@@ -48,6 +50,7 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
       query: searchSubject$,
       cursor: cursorSubject$,
       resultsPerPage: RESULTS_PER_PAGE,
+      token,
     }).subscribe({
       next: (results: ShopifyAPIResponse) => {
         setSearchResults((prevResults) => [...prevResults, ...results.assets])
@@ -57,14 +60,14 @@ export default function ShopifyAssetPicker(props: AssetPickerProps) {
       error: (err) => {
         setError(
           `${
-            err.response.data.message || err.message || 'An error occurred'
+            err.response?.data?.message || err.message || 'An error occurred'
           } - check plugin configuration`
         )
       },
     })
 
     return () => searchSubscription.unsubscribe()
-  }, [searchSubject$, cursorSubject$, shopifyDomain, projectId, dataset])
+  }, [searchSubject$, cursorSubject$, shopifyDomain, projectId, dataset, token])
 
   const handleSearchTermChanged = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
