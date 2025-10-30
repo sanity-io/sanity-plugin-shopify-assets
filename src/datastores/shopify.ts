@@ -35,9 +35,11 @@ const fetchSearch = (props: searchProps): Observable<any> => {
       {
         withCredentials: true,
         method: 'GET',
-        headers: token ? {
-          Authorization: `Bearer ${token}`
-        } : {}
+        headers: token
+          ? {
+              Authorization: `Bearer ${token}`,
+            }
+          : {},
       }
     )
   }).pipe(map((result) => result.data))
@@ -54,9 +56,11 @@ const fetchList = (props: listProps): Observable<any> => {
       {
         withCredentials: true,
         method: 'GET',
-        headers: token ? {
-          Authorization: `Bearer ${token}`
-        } : {}
+        headers: token
+          ? {
+              Authorization: `Bearer ${token}`,
+            }
+          : {},
       }
     )
   ).pipe(map((result) => result.data))
@@ -72,9 +76,15 @@ export const search = (props: fetchProps): Observable<any> => {
       distinctUntilChanged(),
       switchMap(([q, c]) => {
         if (q) {
-          return fetchSearch({projectId, dataset, shop, query: q, cursor: c, resultsPerPage, token}).pipe(
-            distinctUntilChanged()
-          )
+          return fetchSearch({
+            projectId,
+            dataset,
+            shop,
+            query: q,
+            cursor: c,
+            resultsPerPage,
+            token,
+          }).pipe(distinctUntilChanged())
         }
         return fetchList({projectId, dataset, shop, cursor: c, resultsPerPage, token})
       })
