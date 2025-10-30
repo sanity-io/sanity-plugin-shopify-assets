@@ -5,6 +5,12 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.2.1...v1.2.2) (2025-10-30)
+
+### Bug Fixes
+
+- add Bearer token authentication for improved reliability ([#19](https://github.com/sanity-io/sanity-plugin-shopify-assets/issues/19)) ([dc964be](https://github.com/sanity-io/sanity-plugin-shopify-assets/commit/dc964be843e4646c9c0c6a2e0edaaff04e4255aa))
+
 ## [1.2.1](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.2.0...v1.2.1) (2025-07-10)
 
 ### Bug Fixes
