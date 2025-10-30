@@ -13,6 +13,7 @@ interface fetchProps {
   query: SearchSubject
   cursor: CursorSubject
   resultsPerPage: number
+  token?: string
 }
 
 interface searchProps extends Omit<fetchProps, 'query' | 'cursor'> {
@@ -24,7 +25,7 @@ interface listProps extends Omit<fetchProps, 'query' | 'cursor'> {
 }
 
 const fetchSearch = (props: searchProps): Observable<any> => {
-  const {projectId, dataset, shop, query, cursor, resultsPerPage} = props
+  const {projectId, dataset, shop, query, cursor, resultsPerPage, token} = props
 
   return defer(() => {
     return axios.get(
@@ -34,13 +35,16 @@ const fetchSearch = (props: searchProps): Observable<any> => {
       {
         withCredentials: true,
         method: 'GET',
+        headers: token ? {
+          Authorization: `Bearer ${token}`
+        } : {}
       }
     )
   }).pipe(map((result) => result.data))
 }
 
 const fetchList = (props: listProps): Observable<any> => {
-  const {projectId, dataset, shop, cursor, resultsPerPage} = props
+  const {projectId, dataset, shop, cursor, resultsPerPage, token} = props
 
   return defer(() =>
     axios.get(
@@ -50,13 +54,16 @@ const fetchList = (props: listProps): Observable<any> => {
       {
         withCredentials: true,
         method: 'GET',
+        headers: token ? {
+          Authorization: `Bearer ${token}`
+        } : {}
       }
     )
   ).pipe(map((result) => result.data))
 }
 
 export const search = (props: fetchProps): Observable<any> => {
-  const {projectId, dataset, shop, query, cursor, resultsPerPage} = props
+  const {projectId, dataset, shop, query, cursor, resultsPerPage, token} = props
 
   return concat(
     query.pipe(
@@ -65,11 +72,11 @@ export const search = (props: fetchProps): Observable<any> => {
       distinctUntilChanged(),
       switchMap(([q, c]) => {
         if (q) {
-          return fetchSearch({projectId, dataset, shop, query: q, cursor: c, resultsPerPage}).pipe(
+          return fetchSearch({projectId, dataset, shop, query: q, cursor: c, resultsPerPage, token}).pipe(
             distinctUntilChanged()
           )
         }
-        return fetchList({projectId, dataset, shop, cursor: c, resultsPerPage})
+        return fetchList({projectId, dataset, shop, cursor: c, resultsPerPage, token})
       })
     )
   )
