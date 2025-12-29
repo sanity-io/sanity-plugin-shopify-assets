@@ -5,6 +5,12 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.2.2...v1.2.3) (2025-12-29)
+
+### Bug Fixes
+
+- **deps:** allow studio v5 in peer deps ranges ([e4d1b40](https://github.com/sanity-io/sanity-plugin-shopify-assets/commit/e4d1b40dcb79db6a9e36f0096582ae9639c3cad2))
+
 ## [1.2.2](https://github.com/sanity-io/sanity-plugin-shopify-assets/compare/v1.2.1...v1.2.2) (2025-10-30)
 
 ### Bug Fixes
